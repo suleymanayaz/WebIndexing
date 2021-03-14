@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Soru Cevabı 1 - {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for anahtar,deger in test.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

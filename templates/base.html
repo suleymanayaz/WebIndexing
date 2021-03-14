@@ -1,0 +1,50 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} Web indexleme Uygulaması </title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<html>
+<head>
+<meta charset="utf-8">
+<title>Forkit</title>
+</head>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forkit.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/demo.css') }}">
+<body>
+<div class="forkit-curtain">
+			<div class="close-button"></div>
+			
+    <img src="{{url_for('static', filename='images/indir.png')}}" style="padding-bottom: 35px", width="250",height="180">
+
+
+    <p>Flask bir python frameworküdür. Bilindiği üzere python hızlıca birşeyler yapmak belli sonuçları zamandan
+        kazanarak ortaya çıkarmak için hayat kurtaran bir dildir. <br>Web servislerinde de hızlı sonuç elde etmek için
+        pythonun flask frameworkünden yararlanlabirilir. <br>Flask hem çabuk öğrenilebilen hemde bencmarklarına
+        bakıldığında performansı gayet yüksek bir frameworktür.</p><br>
+    <h2>Web Framework</h2><br>
+    <p>Web framework ölçeklenebilir,güvenilir ve sürdürülebilir web uygulamaları oluştururken hayat kurtaran paket
+        veya modüller içeren bir kütüphane yada koleksiyondur. <br>Türkçe karşılığı çerçevedir.
+        Frameworkler ortak işlemlerde kodu tekrar kullanmayı kolaylaştırır. Kod kalabalığını önler.
+        <br>Her şeyden öte Python’nun yorumlanabilir bir dil olması yani derlenmeye ihtiyaç duymaması işlemlerin süresini
+        kısaltan en büyük etken.</p>
+            </div>
+    <a class="forkit" data-text="FLASK HAKKINDA" data-text-detached="BİLGİ İÇİN TIKLAYINIZ." href="{{ url_for('static', filename='js/forkit.js') }}">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="{{url_for('static', filename='images/cubuk.png')}}" alt="Fork me on GitHub">
+    </a>
+    
+<script src="{{url_for('static', filename='js/forkit.js')}}"></script>
+ <div class="container">
+<nav>
+  <h1 align="center">Web İndeksleme Uygulaması<br></h1>
+</nav>
+<section class="content">
+  <header align="center">
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
+</div>
+
+</body>
+</html>

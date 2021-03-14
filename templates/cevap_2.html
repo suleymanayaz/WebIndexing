@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Soru Cevabı 2 - {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+     <p> URL 1 En yüksek frekansa sahip kelimeler : </p>
+        {% for anahtar,deger in test.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+        <p> ------------- </p>
+        <p> URL 2 En yüksek frekansa sahip kelimeler : </p>
+        {% for anahtar,deger in test2.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+          <p> ------------- </p>
+         <p> 2 URLDE GECEN KELİMELER  : </p>
+        {% for anahtar,deger in test3.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+            <p> ------------- </p>
+             <p>Benzerlik Skor : {{test4}} </p>
+    </ul>
+{% endblock %}
+
