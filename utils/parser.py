@@ -97,13 +97,14 @@ def included(getSozluk,get2Sozluk):
             includedKelimeler[anahtar]=returnValue(get2Sozluk,anahtar)
     return includedKelimeler         
        
-def skorHesapla(includedKelimeler,get2Sozluk):
+def skorHesapla(includedKelimeler,get1Sozluk,get2Sozluk):
     temp = 1
-    tumkelimeFrekans = allSumValue(get2Sozluk)
+    tumkelimeFrekans1 = allSumValue(get2Sozluk)
+    tumkelimeFrekans2 = allSumValue(get1Sozluk)
     for anahtar,deger in includedKelimeler.items():
         print(deger)
-        temp +=deger 
-    skor = (temp)/ tumkelimeFrekans
+        temp +=deger
+    skor =  2*temp / (tumkelimeFrekans1+tumkelimeFrekans2)
     
     return skor*100
 
@@ -115,11 +116,11 @@ def allSumValue(gel):
 def checkKey(dict, key): 
       
     if key in dict.keys(): 
-        print("Present, ", end =" ") 
-        print("value =", dict[key]) 
+        #print("Present, ", end =" ") 
+        #print("value =", dict[key]) 
         return 0
     else: 
-        print("Not present") 
+        #print("Not present") 
         return 1
 
 def returnValue(dict,key):
