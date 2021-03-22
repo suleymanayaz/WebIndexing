@@ -35,6 +35,13 @@ def b():
         return render_template('cevap_2.html', test=frekans1Url,test2=frekans2Url,test3=sozluk1ve2UrlOrtak,test4=skor)
     return render_template('soru_2.html')
 
+@app.route('/soru_3',methods=('GET', 'POST'))
+def c():
+    if request.method == 'POST':
+        url = request.form['url']
+        returnValue = parser.func3(url)   
+        return render_template('cevap_3.html', test=returnValue)
+    return render_template('soru_3.html')
 
 app.run(host="localhost", port=int("777"))
 

@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import operator
-
+import nltk
+import math 
+from nltk.corpus import stopwords
 
 def sozlukolustur(tumkelimeler):
     kelimesayisi = {}
@@ -36,7 +38,8 @@ def frekansbul(kelimesayisi):
     listeKelimeSayisi = list(kelimesayisi.items()) 
     liste = []
     count = -1
-    while(count>=-6):
+    counter = len(kelimesayisi)
+    while(count>=-10): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
         liste.append(listeKelimeSayisi[count])
         count-=1
     return ConvertToDic(liste)
@@ -51,6 +54,7 @@ def ConvertToDic(liste):
     return res_dct
 
 def func1(getUrl):
+    nltk.download('stopwords')
     tumkelimeler= []
     r = requests.get(getUrl)
     soup = BeautifulSoup(r.content,"html.parser")
@@ -71,7 +75,9 @@ def func1(getUrl):
 
 
 def func2(getUrl):
+   
     tumkelimeler= []
+    stopsWord = []
     r = requests.get(getUrl)
     soup = BeautifulSoup(r.content,"html.parser")
     for kelimegruplari in soup.find_all("p"):
@@ -85,7 +91,14 @@ def func2(getUrl):
 
         kelimesayisi = sozlukolustur(tumkelimeler)
         kelimesayisi = sortWords(kelimesayisi)
-       
+    
+    for anahtar,deger in kelimesayisi.items():        
+        for stopWords in stopwords.words('turkish'):
+            if(anahtar==stopWords):
+                stopsWord.append(anahtar)
+                
+    for kelime in stopsWord:
+        del kelimesayisi[kelime]
     frekans = frekansbul(kelimesayisi)    
     return frekans
 
@@ -98,16 +111,18 @@ def included(getSozluk,get2Sozluk):
     return includedKelimeler         
        
 def skorHesapla(includedKelimeler,get1Sozluk,get2Sozluk):
-    temp = 1
-    tumkelimeFrekans1 = allSumValue(get2Sozluk)
-    tumkelimeFrekans2 = allSumValue(get1Sozluk)
-    for anahtar,deger in includedKelimeler.items():
-        print(deger)
-        temp +=deger
-    skor =  2*temp / (tumkelimeFrekans1+tumkelimeFrekans2)
-    
-    return skor*100
+    numerator = dotProduct(get1Sozluk,get2Sozluk)
+    denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))    
+    deger = math.acos(numerator / denominator) 
+    #print("The distance between the documents is: % 0.6f (radians)"% deger) 
+    return deger*100
 
+def dotProduct(d1,d2):
+    sum=0.0
+    for key in d1:
+        if key in d2:
+            sum+=(d1[key]*d2[key])
+    return sum
 
 def allSumValue(gel):
    print(sum(gel.values()))
@@ -127,7 +142,45 @@ def returnValue(dict,key):
     if key in dict.keys(): 
         return dict[key]
  
-
+    
+def func3(getUrl):
+    alturller = []
+    alturller2 = []
+    counter=0
+    index = 0
+    anaUrl = ""
+    for harf in getUrl:
+        if(counter < 3 ):
+            anaUrl = anaUrl + harf
+            if(harf == '/'):
+                counter = counter + 1
+            
+    print(anaUrl)      
+        
+    r = requests.get(getUrl)
+    soup = BeautifulSoup(r.content,"html.parser")
+    for link in soup.find_all('a',href=True):
+        alturller.append(link['href'])
+        
+    for url in alturller:
+        if(len(url)>1):
+            if(url[0]=='/'):
+                alturller2.append(url)
+    if(len(alturller2)==0):
+        for url in alturller:
+            index = 0
+            index = url.find(anaUrl)
+            print(url.find(anaUrl)) 
+            if(index !=0):
+                alturller2.append(url)
+               
+    return alturller2
+       
+    
+    
+    
+    
+    
         
     
 
