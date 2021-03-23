@@ -39,7 +39,7 @@ def frekansbul(kelimesayisi):
     liste = []
     count = -1
     counter = len(kelimesayisi)
-    while(count>=-10): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
+    while(count>=-3): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
         liste.append(listeKelimeSayisi[count])
         count-=1
     return ConvertToDic(liste)
@@ -112,17 +112,35 @@ def included(getSozluk,get2Sozluk):
        
 def skorHesapla(includedKelimeler,get1Sozluk,get2Sozluk):
     numerator = dotProduct(get1Sozluk,get2Sozluk)
-    denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))    
-    deger = math.acos(numerator / denominator) 
+    dotProduct2(get1Sozluk,get2Sozluk)
+    print(numerator)
+    if numerator ==0.0:
+        deger = 0
+    else:
+        denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))  
+        if denominator==numerator:
+            deger = 100
+        else:
+            deger = math.acos(numerator / denominator) 
+            deger = deger / 0.062831853071796
     #print("The distance between the documents is: % 0.6f (radians)"% deger) 
-    return deger*100
+    return deger
 
 def dotProduct(d1,d2):
     sum=0.0
     for key in d1:
         if key in d2:
             sum+=(d1[key]*d2[key])
+            
     return sum
+
+def dotProduct2(d1,d2):
+    sum=0.0
+    for key in d1:
+        if key in d2:
+            print(key)
+           
+
 
 def allSumValue(gel):
    print(sum(gel.values()))

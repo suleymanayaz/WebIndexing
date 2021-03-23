@@ -31,7 +31,7 @@ def b():
         sozluk2Url= parser.func1(url2) # burası bize 2.urldeki tüm sözlüğü döndürür.
         sozluk1Url= parser.func1(url) # burası bize 1.urldeki tüm sözlüğü döndürür.
         sozluk1ve2UrlOrtak = parser.included(frekans1Url,sozluk2Url)
-        skor = parser.skorHesapla(sozluk1ve2UrlOrtak,sozluk1Url,sozluk2Url)
+        skor = parser.skorHesapla(sozluk1ve2UrlOrtak,frekans1Url,frekans2Url)
         return render_template('cevap_2.html', test=frekans1Url,test2=frekans2Url,test3=sozluk1ve2UrlOrtak,test4=skor)
     return render_template('soru_2.html')
 
