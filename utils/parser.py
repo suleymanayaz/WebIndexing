@@ -112,17 +112,9 @@ def included(getSozluk,get2Sozluk):
        
 def skorHesapla(includedKelimeler,get1Sozluk,get2Sozluk):
     numerator = dotProduct(get1Sozluk,get2Sozluk)
-    dotProduct2(get1Sozluk,get2Sozluk)
-    print(numerator)
-    if numerator ==0.0:
-        deger = 0
-    else:
-        denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))  
-        if denominator==numerator:
-            deger = 100
-        else:
-            deger = math.acos(numerator / denominator) 
-            deger = deger / 0.062831853071796
+    denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))  
+    deger = math.acos(numerator / denominator) 
+    deger = deger*(180/math.pi)
     #print("The distance between the documents is: % 0.6f (radians)"% deger) 
     return deger
 
