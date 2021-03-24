@@ -6,22 +6,37 @@
 
 {% block content %}
     <ul>
-     <p> URL 1 En yüksek frekansa sahip kelimeler : </p>
+     <p> URL 1 DEKİ TUM KELİMELER </p>
         {% for anahtar,deger in test.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+     <p> ------------- </p>
+     
+     <p> URL 2 DEKİ TUM KELİMELER </p>
+        {% for anahtar,deger in test2.items() %} 
+            <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+     <p> ------------- </p>
+     
+     <p> URL 1 En yüksek frekansa sahip kelimeler : </p>
+        {% for anahtar,deger in test3.items() %} 
             <li> {{ anahtar }} : {{ deger }}</li>
         {% endfor %}
         <p> ------------- </p>
         <p> URL 2 En yüksek frekansa sahip kelimeler : </p>
-        {% for anahtar,deger in test2.items() %} 
+        {% for anahtar,deger in test4.items() %} 
             <li> {{ anahtar }} : {{ deger }}</li>
         {% endfor %}
           <p> ------------- </p>
-         <p> 2 URLDE GECEN KELİMELER  : </p>
-        {% for anahtar,deger in test3.items() %} 
-            <li> {{ anahtar }} : {{ deger }}</li>
-        {% endfor %}
+          {% if test4!=90 %}
+                {% for anahtar,deger in test5.items() %} 
+                    <li> {{ anahtar }} : {{ deger }}</li>
+                {% endfor %}    
+            {% else %}
+               <p> Benzer bir kelime yok !! </p>
+        {% endif %}
             <p> ------------- </p>
-             <p>Benzerlik Skor : %{{test4}} </p>
+             <p>Benzerlik Skor : {{test6}} </p>
     </ul>
 {% endblock %}
 

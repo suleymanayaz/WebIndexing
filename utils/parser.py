@@ -5,6 +5,7 @@ import nltk
 import math 
 from nltk.corpus import stopwords
 
+
 def sozlukolustur(tumkelimeler):
     kelimesayisi = {}
     for kelime in tumkelimeler:
@@ -39,7 +40,7 @@ def frekansbul(kelimesayisi):
     liste = []
     count = -1
     counter = len(kelimesayisi)
-    while(count>=-3): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
+    while(count>=-10): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
         liste.append(listeKelimeSayisi[count])
         count-=1
     return ConvertToDic(liste)
@@ -53,64 +54,41 @@ def ConvertToDic(liste):
     res_dct = dict(zip(it, it))
     return res_dct
 
-def func1(getUrl):
-    nltk.download('stopwords')
-    tumkelimeler= []
-    r = requests.get(getUrl)
-    soup = BeautifulSoup(r.content,"html.parser")
-    for kelimegruplari in soup.find_all("p"):
-        icerik = kelimegruplari.text
-        kelimeler = icerik.lower().split()
-
-        for kelime in kelimeler:
-            tumkelimeler.append(kelime)
-            # print(kelime)
-        tumkelimeler = sembolleritemizle(tumkelimeler)
-
-        kelimesayisi = sozlukolustur(tumkelimeler)
-        kelimesayisi = sortWords(kelimesayisi)
-       
-        
-    return kelimesayisi
 
 
-def func2(getUrl):
-   
-    tumkelimeler= []
+def gereksizKelimeCikarma(kelimesayisi):
     stopsWord = []
-    r = requests.get(getUrl)
-    soup = BeautifulSoup(r.content,"html.parser")
-    for kelimegruplari in soup.find_all("p"):
-        icerik = kelimegruplari.text
-        kelimeler = icerik.lower().split()
-
-        for kelime in kelimeler:
-            tumkelimeler.append(kelime)
-            # print(kelime)
-        tumkelimeler = sembolleritemizle(tumkelimeler)
-
-        kelimesayisi = sozlukolustur(tumkelimeler)
-        kelimesayisi = sortWords(kelimesayisi)
-    
     for anahtar,deger in kelimesayisi.items():        
         for stopWords in stopwords.words('turkish'):
             if(anahtar==stopWords):
                 stopsWord.append(anahtar)
-                
     for kelime in stopsWord:
-        del kelimesayisi[kelime]
-    frekans = frekansbul(kelimesayisi)    
-    return frekans
-
+        del kelimesayisi[kelime] ## nlkt deki stop kelimeler cıkarılıyor
+            
+    ftest = open("static/a.txt",encoding="utf-8")
+    ellestopwords =[]
+    for words in ftest.readlines():
+        ellestopwords.append(words.split())
+    ftest.close()
+    stopsWord.clear()
+    for anahtar,deger in kelimesayisi.items():        
+        for stopWords in ellestopwords:
+            if(anahtar==stopWords):
+                stopsWord.append(anahtar)
+    for kelime in stopsWord:
+        del kelimesayisi[kelime]  ## bizim eklediğimiz stop kelimeler cıkarılıyor
+        
+    
+    return kelimesayisi
 
 def included(getSozluk,get2Sozluk):
     includedKelimeler = {}
     for anahtar,deger in getSozluk.items():
         if(checkKey(get2Sozluk,anahtar) == 0):
             includedKelimeler[anahtar]=returnValue(get2Sozluk,anahtar)
-    return includedKelimeler         
-       
-def skorHesapla(includedKelimeler,get1Sozluk,get2Sozluk):
+    return includedKelimeler   
+
+def skorHesapla(get1Sozluk,get2Sozluk):
     numerator = dotProduct(get1Sozluk,get2Sozluk)
     denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))  
     deger = math.acos(numerator / denominator) 
@@ -124,15 +102,7 @@ def dotProduct(d1,d2):
         if key in d2:
             sum+=(d1[key]*d2[key])
             
-    return sum
-
-def dotProduct2(d1,d2):
-    sum=0.0
-    for key in d1:
-        if key in d2:
-            print(key)
-           
-
+    return sum    
 
 def allSumValue(gel):
    print(sum(gel.values()))
@@ -141,18 +111,54 @@ def allSumValue(gel):
 def checkKey(dict, key): 
       
     if key in dict.keys(): 
-        #print("Present, ", end =" ") 
-        #print("value =", dict[key]) 
         return 0
     else: 
-        #print("Not present") 
         return 1
 
 def returnValue(dict,key):
     if key in dict.keys(): 
-        return dict[key]
- 
+        return dict[key]    
     
+def func1(getUrl):
+    tumkelimeler= []
+    r = requests.get(getUrl)
+    soup = BeautifulSoup(r.content,"html.parser")
+    for kelimegruplari in soup.find_all("p"):
+        icerik = kelimegruplari.text
+        kelimeler = icerik.lower().split()
+
+        for kelime in kelimeler:
+            tumkelimeler.append(kelime)
+            # print(kelime)
+        tumkelimeler = sembolleritemizle(tumkelimeler)
+
+        kelimesayisi = sozlukolustur(tumkelimeler)
+        kelimesayisi = sortWords(kelimesayisi)
+        kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
+   
+   
+    return kelimesayisi
+    
+def func2(getUrl):
+    tumkelimeler= []
+    r = requests.get(getUrl)
+    soup = BeautifulSoup(r.content,"html.parser")
+    for kelimegruplari in soup.find_all("p"):
+        icerik = kelimegruplari.text
+        kelimeler = icerik.lower().split()
+
+        for kelime in kelimeler:
+            tumkelimeler.append(kelime)
+        tumkelimeler = sembolleritemizle(tumkelimeler)
+        
+        kelimesayisi = sozlukolustur(tumkelimeler)
+        kelimesayisi = sortWords(kelimesayisi)
+        kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
+        
+    frekans = frekansbul(kelimesayisi)    
+    
+    return frekans
+
 def func3(getUrl):
     alturller = []
     alturller2 = []
@@ -185,6 +191,18 @@ def func3(getUrl):
                 alturller2.append(url)
                
     return alturller2
+
+  
+       
+
+
+
+
+
+
+ 
+    
+
        
     
     

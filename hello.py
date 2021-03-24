@@ -1,10 +1,9 @@
+from utils import parser
 from flask import Flask
 from flask import render_template
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from utils import parser
-import operator
 
 app = Flask(__name__)
 
@@ -26,13 +25,13 @@ def b():
     if request.method == 'POST':
         url = request.form['url']
         url2= request.form['url2']
+        sozluk1Url= parser.func1(url)
+        sozluk2Url= parser.func1(url2)
         frekans1Url = parser.func2(url)
-        frekans2Url = parser.func2(url2) # burası 2.urlde ilk 5'i döndoruyor bize 2.url tamamı lazım
-        sozluk2Url= parser.func1(url2) # burası bize 2.urldeki tüm sözlüğü döndürür.
-        sozluk1Url= parser.func1(url) # burası bize 1.urldeki tüm sözlüğü döndürür.
-        sozluk1ve2UrlOrtak = parser.included(frekans1Url,sozluk2Url)
-        skor = parser.skorHesapla(sozluk1ve2UrlOrtak,frekans1Url,frekans2Url)
-        return render_template('cevap_2.html', test=frekans1Url,test2=frekans2Url,test3=sozluk1ve2UrlOrtak,test4=skor)
+        frekans2Url = parser.func2(url2) 
+        sozluk1ve2UrlOrtak = parser.included(frekans1Url,frekans2Url)
+        skor = parser.skorHesapla(frekans1Url,frekans2Url)
+        return render_template('cevap_2.html',test=sozluk1Url,test2=sozluk2Url, test3=frekans1Url,test4=frekans2Url,test5 = sozluk1ve2UrlOrtak,test6=skor)
     return render_template('soru_2.html')
 
 @app.route('/soru_3',methods=('GET', 'POST'))
@@ -43,5 +42,5 @@ def c():
         return render_template('cevap_3.html', test=returnValue)
     return render_template('soru_3.html')
 
-app.run(host="localhost", port=int("777"))
+app.run(debug=False,host="localhost", port=int("777"))
 
