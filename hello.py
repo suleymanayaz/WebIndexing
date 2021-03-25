@@ -1,4 +1,5 @@
 from utils import parser
+from utils import url
 from flask import Flask
 from flask import render_template
 from flask import (
@@ -37,10 +38,41 @@ def b():
 @app.route('/soru_3',methods=('GET', 'POST'))
 def c():
     if request.method == 'POST':
-        url = request.form['url']
-        returnValue = parser.func3(url)   
-        return render_template('cevap_3.html', test=returnValue)
+        anaUrl = request.form['url']
+        anaUrlSozluk = parser.func1(anaUrl)
+        anaUrlFrekans = parser.func2(anaUrl)
+        print(anaUrlFrekans)
+        anaUrlObject = url.AnaUrl(anaUrl,anaUrlSozluk,anaUrlFrekans,0)
+        anaUrlObject.altUrller.clear()
+        anaUrlObject.altUrller_skor.clear()
+        altUrller = parser.func3(anaUrl)   
+        for altUrl in altUrller:
+            print(altUrl)
+
+            
+            altUrlSozluk = parser.func1(altUrl)
+            altUrlFrekans = parser.func2(altUrl) 
+            skor = parser.skorHesapla(anaUrlFrekans,altUrlFrekans)    
+            altUrlObject = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans,skor)
+            anaUrlObject.alturl_ekle(altUrlObject)
+        
+        #for altUrlObject in anaUrlObject.altUrller:
+        #    altinaltUrller = parser.func3(altUrlObject.anaUrl)
+        #    for altUrl in altinaltUrller:
+        #         altUrlSozluk = parser.func1(altUrl)
+        #         altUrlFrekans = parser.func2(altUrl)
+        #         altUrlObject = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans)
+        #         altUrlObject.alturl_ekle(altUrlObject)
+                 
+        for altUrlObject in anaUrlObject.altUrller:
+            #print(anaUrlObject.frekans)
+            #print("---")
+            anaUrlObject.altUrller_skor[altUrlObject.anaUrl] = altUrlObject.skor
+        
+        anaUrlObject.sortSkor(parser.sortWords2(anaUrlObject.altUrller_skor))
+
+        return render_template('cevap_3.html', anaUrlisim = anaUrl,test = altUrller,test1=anaUrlObject.altUrller_skor_reverse)
     return render_template('soru_3.html')
 
-app.run(debug=False,host="localhost", port=int("777"))
+app.run(debug=False,host="localhost", port=int("999"))
 
