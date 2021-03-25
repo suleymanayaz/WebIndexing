@@ -36,43 +36,64 @@ def b():
     return render_template('soru_2.html')
 
 @app.route('/soru_3',methods=('GET', 'POST'))
+def d():
+    if request.method == 'POST':
+        anaUrl = request.form['url']
+        anaUrlSozluk = parser.func1(anaUrl)
+        anaUrlFrekans = parser.func2(anaUrl)
+        print(anaUrlFrekans)
+        anaUrlObject = url.AnaUrl(anaUrl,anaUrlSozluk,anaUrlFrekans,0,1)
+        anaUrlObject.altUrller.clear()
+        anaUrlObject.altUrller_skor.clear()
+        altUrller = parser.func3(anaUrl)   
+
+
+        return render_template('cevap_3.html', anaUrlisim = anaUrl,test = altUrller)
+    return render_template('soru_3.html')
+
+
+@app.route('/soru_4',methods=('GET', 'POST'))
 def c():
     if request.method == 'POST':
         anaUrl = request.form['url']
         anaUrlSozluk = parser.func1(anaUrl)
         anaUrlFrekans = parser.func2(anaUrl)
         print(anaUrlFrekans)
-        anaUrlObject = url.AnaUrl(anaUrl,anaUrlSozluk,anaUrlFrekans,0)
+        anaUrlObject = url.AnaUrl(anaUrl,anaUrlSozluk,anaUrlFrekans,0,1)
         anaUrlObject.altUrller.clear()
         anaUrlObject.altUrller_skor.clear()
         altUrller = parser.func3(anaUrl)   
         for altUrl in altUrller:
-            print(altUrl)
+            print("1.SEVİYE : "+altUrl)
 
             
             altUrlSozluk = parser.func1(altUrl)
             altUrlFrekans = parser.func2(altUrl) 
             skor = parser.skorHesapla(anaUrlFrekans,altUrlFrekans)    
-            altUrlObject = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans,skor)
+            altUrlObject = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans,skor,2)
             anaUrlObject.alturl_ekle(altUrlObject)
         
-        #for altUrlObject in anaUrlObject.altUrller:
-        #    altinaltUrller = parser.func3(altUrlObject.anaUrl)
-        #    for altUrl in altinaltUrller:
-        #         altUrlSozluk = parser.func1(altUrl)
-        #         altUrlFrekans = parser.func2(altUrl)
-        #         altUrlObject = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans)
-        #         altUrlObject.alturl_ekle(altUrlObject)
+        for altUrlObject in anaUrlObject.altUrller:
+            altinaltUrller = parser.func3(altUrlObject.anaUrl)
+            for altUrl in altinaltUrller:
+                 print("2.SEVİYE : "+altUrl)
+                 altUrlSozluk = parser.func1(altUrl)
+                 altUrlFrekans = parser.func2(altUrl)
+                 skor = parser.skorHesapla(anaUrlFrekans,altUrlFrekans)   
+                 altUrlObject1 = url.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans,skor,3)
+                 altUrlObject.alturl_ekle(altUrlObject1)
                  
         for altUrlObject in anaUrlObject.altUrller:
             #print(anaUrlObject.frekans)
             #print("---")
             anaUrlObject.altUrller_skor[altUrlObject.anaUrl] = altUrlObject.skor
+            for altUrlObject1 in altUrlObject.altUrller:
+                anaUrlObject.altUrller_skor[altUrlObject1.anaUrl] = altUrlObject1.skor
         
         anaUrlObject.sortSkor(parser.sortWords2(anaUrlObject.altUrller_skor))
 
-        return render_template('cevap_3.html', anaUrlisim = anaUrl,test = altUrller,test1=anaUrlObject.altUrller_skor_reverse)
-    return render_template('soru_3.html')
+        return render_template('cevap_4.html', anaUrlisim = anaUrl,test = altUrller,test1=anaUrlObject.altUrller_skor_reverse)
+    return render_template('soru_4.html')
 
 app.run(debug=False,host="localhost", port=int("999"))
 

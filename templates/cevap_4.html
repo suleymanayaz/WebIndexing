@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Soru Cevabı 4 - {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+    <p> Ana Url :{{anaUrlisim}} </p>
+        <p>Ana Url olan benzerlikler </p>
+        {% for anahtar,deger in test1.items() %} 
+             <li> {{ anahtar }} : {{ deger }}</li>
+        {% endfor %}
+        
+        <p> Alt Urller :  </p>
+        {% for anahtar in test %} 
+             <li> {{ anahtar }} </li>
+        {% endfor %}
+        
+    </ul>
+{% endblock %}

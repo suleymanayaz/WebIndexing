@@ -2,12 +2,13 @@ class AnaUrl():
     altUrller = []
     altUrller_skor = {}
     altUrller_skor_reverse = {}
-    def __init__(self, url,sozluk,frekans,skor):
+    def __init__(self, url,sozluk,frekans,skor,seviye):
         self.anaUrl = url
         self.altUrller = []
         self.sozluk = sozluk
         self.frekans = frekans
         self.skor = skor
+        self.seviye = seviye
     def alturl_ekle(self,altUrl):
         self.altUrller.append(altUrl)
     

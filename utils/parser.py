@@ -6,6 +6,8 @@ import math
 from nltk.corpus import stopwords
 
 
+
+
 def sozlukolustur(tumkelimeler):
     kelimesayisi = {}
     for kelime in tumkelimeler:
@@ -165,7 +167,7 @@ def func1(getUrl):
     kelimesayisi = sozlukolustur(tumkelimeler)
     kelimesayisi = sortWords(kelimesayisi)
     kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
-   
+    
    
     return kelimesayisi
     
