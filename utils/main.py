@@ -6,15 +6,20 @@ import operator
 import nltk
 #nltk.download('stopwords')
 from nltk.corpus import stopwords
-ftest = open("a.txt",encoding="utf-8")
+ftest = open("kelime-esanlamlisi.txt","r+",encoding="utf-8")
 #print(stopwords.words('turkish'))
 
 ellestopwords =[]
 for words in ftest.readlines():
-    ellestopwords.append(words.split())
+    if( words != None ):
+     ellestopwords.append(words.split())
 ftest.close()
-for words in ellestopwords:
-    print(words)
+
+
+
+    
+
+
 
 tumkelimeler = []
 alturller= []
@@ -82,7 +87,7 @@ def sembolleritemizle(tumkelimeler):
             sembolsuzkelimeler.append(kelime)
     return  sembolsuzkelimeler
 
-
+print (soup.find_all("p"))
 for kelimegruplari in soup.find_all("p"):
     icerik = kelimegruplari.text
     kelimeler = icerik.lower().split()

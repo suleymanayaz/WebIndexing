@@ -6,9 +6,13 @@
 
 {% block content %}
     <ul>
-        {% for anahtar,deger in test.items() %} 
-            <li> {{ anahtar }} : {{ deger }}</li>
+        {% for kelime,kelime_tekrar_sayisi in temiz_kelime_sozlugu.items() %} 
+            <li> {{ kelime }} : {{ kelime_tekrar_sayisi }} </li>
         {% endfor %}
+            {% for satir in esanlamli %}
+            <li> Kelime : {{satir[0]}}  Eş anlamlısı  : {{satir[1]}}  </li>
+        {% endfor %}
+            
     </ul>
 {% endblock %}
 

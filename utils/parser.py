@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 
 
 def sozlukolustur(tumkelimeler):
-    kelimesayisi = {}
+    kelimesayisi = {} # sözlük
     for kelime in tumkelimeler:
         if kelime in kelimesayisi:
             kelimesayisi[kelime] +=1
@@ -36,11 +36,7 @@ def sortWords(kelimesayisi):
     for anahtar,deger in sorted(kelimesayisi.items(),key = operator.itemgetter(1)):
             sortedkelimeler[anahtar] = deger
     return sortedkelimeler
-def sortWords2(kelimesayisi):
-    sortedkelimeler = {}
-    for anahtar,deger in sorted(kelimesayisi.items(),key = operator.itemgetter(1)):
-            sortedkelimeler[anahtar] = deger
-    return sortedkelimeler
+
 
 def frekansbul(kelimesayisi):
     listeKelimeSayisi = list(kelimesayisi.items()) 
@@ -51,9 +47,10 @@ def frekansbul(kelimesayisi):
         sa = -10
     else:
         sa = -counter
+        
     if counter !=0:
-        while(count>=-counter): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar
-            liste.append(listeKelimeSayisi[count])
+        while(count>=-counter): # burda -10 ' u -counter olarak yazarsak ekrana tum kelimeleri basar #-1  >= -10 
+            liste.append(listeKelimeSayisi[count]) ## kücükten büyüğe sıralamıştık  ## -2 >= -10 
             count-=1
     return ConvertToDic(liste)
 
@@ -75,13 +72,16 @@ def listToString(s):
     # return string  
     return (str1.join(s))
 def gereksizKelimeCikarma(kelimesayisi):
-    stopsWord = []
-    for anahtar,deger in kelimesayisi.items():        
+    stopsWord = []  
+    for kelime,kelime_tekrar_sayisi in kelimesayisi.items():     
         for stopWords in stopwords.words('turkish'):
-            if(anahtar==stopWords):
-                stopsWord.append(anahtar)
+            if(kelime==stopWords):
+                stopsWord.append(kelime)
+                
     for kelime in stopsWord:
         del kelimesayisi[kelime] ## nlkt deki stop kelimeler cıkarılıyor
+        
+    #----- silinebilir ---------------------------------------
     stopsWord.clear()
     for anahtar,deger in kelimesayisi.items():        
         for stopWords in stopwords.words('english'):
@@ -89,26 +89,53 @@ def gereksizKelimeCikarma(kelimesayisi):
                 stopsWord.append(anahtar)
     for kelime in stopsWord:
         del kelimesayisi[kelime] ## nlkt deki stop kelimeler cıkarılıyor
-            
-    ftest = open("static/a.txt",encoding="utf-8")
-    ellestopwords =[]
+   #----- silinebilir ---------------------------------------     
+   
+    ftest = open("static/dahilistopword.txt",encoding="utf-8")
+    haricistopwords =[]
     for words in ftest.readlines():
-        ellestopwords.append(words.split())
+        haricistopwords.append(words.split())
     ftest.close()
+    
     stopsWord.clear()
     for anahtar,deger in kelimesayisi.items():        
-       for kelime in ellestopwords:
-           kelime2 = listToString(kelime)
-           if kelime2 == anahtar:
+       for kelime in haricistopwords:
+           hariciKelimeString = listToString(kelime)
+           if hariciKelimeString == anahtar:
                stopsWord.append(anahtar)
 
-    for kelime in stopsWord:
+    for kelime in stopsWord:  
         if kelimesayisi.get(kelime) != None:
             del kelimesayisi[kelime]  ## bizim eklediğimiz stop kelimeler cıkarılıyor
     
     
     return kelimesayisi
 
+def esAnlamliKelimeCikarma(kelimesayisi):
+    ftest = open("static/kelime-esanlamlisi.txt",encoding="utf-8")
+    esAnlamliKelimeler =[]
+    bulunanKelimelerEsAnlamlari = []
+    bulunanKelimelerEsAnlamlari1 = []
+    for words in ftest.readlines():
+        esAnlamliKelimeler.append(words.split())
+    ftest.close()
+    
+    for anahtar,deger in kelimesayisi.items():
+        for satir in esAnlamliKelimeler:
+            if satir[0] == anahtar :
+                if len(satir) == 2:
+                    bulunanKelimelerEsAnlamlari.append(satir)
+                    
+    for satir in bulunanKelimelerEsAnlamlari:
+        for anahtar,deger in kelimesayisi.items():
+            if satir[1] == anahtar:
+                bulunanKelimelerEsAnlamlari1.append(satir)
+                
+    return bulunanKelimelerEsAnlamlari1
+    
+
+    
+    
 def included(getSozluk,get2Sozluk):
     includedKelimeler = {}
     for anahtar,deger in getSozluk.items():
@@ -117,9 +144,8 @@ def included(getSozluk,get2Sozluk):
     return includedKelimeler   
 
 def skorHesapla(get1Sozluk,get2Sozluk):
-    numerator = dotProduct(get1Sozluk,get2Sozluk)
-    
-    denominator = math.sqrt(dotProduct(get1Sozluk,get1Sozluk)*dotProduct(get2Sozluk, get2Sozluk))  
+    numerator = benzerlik_hesaplama(get1Sozluk,get2Sozluk)  
+    denominator = math.sqrt(benzerlik_hesaplama(get1Sozluk,get1Sozluk)*benzerlik_hesaplama(get2Sozluk, get2Sozluk))  
     if(denominator != 0):
         deger = math.acos(numerator / denominator) 
         deger = deger*(180/math.pi)
@@ -128,11 +154,11 @@ def skorHesapla(get1Sozluk,get2Sozluk):
     #print("The distance between the documents is: % 0.6f (radians)"% deger) 
     return deger
 
-def dotProduct(d1,d2):
+def benzerlik_hesaplama(getsozluk,get1sozluk):
     sum=0.0
-    for key in d1:
-        if key in d2:
-            sum+=(d1[key]*d2[key])
+    for key in getsozluk:
+        if key in get1sozluk:
+            sum+=(getsozluk[key]*get1sozluk[key])
             
     return sum    
 
@@ -151,7 +177,8 @@ def returnValue(dict,key):
     if key in dict.keys(): 
         return dict[key]    
     
-def func1(getUrl):
+    
+def kelime_sozluk_olusturma(getUrl):
     tumkelimeler= []
     r = requests.get(getUrl)
     soup = BeautifulSoup(r.content,"html.parser")
@@ -170,28 +197,18 @@ def func1(getUrl):
     
    
     return kelimesayisi
-    
-def func2(getUrl):
-    tumkelimeler= []
-    r = requests.get(getUrl)
-    soup = BeautifulSoup(r.content,"html.parser")
-    for kelimegruplari in soup.find_all("p"):
-        icerik = kelimegruplari.text
-        kelimeler = icerik.lower().split()
 
-        for kelime in kelimeler:
-            tumkelimeler.append(kelime)
-        tumkelimeler = sembolleritemizle(tumkelimeler)
-        
-    kelimesayisi = sozlukolustur(tumkelimeler)
-    kelimesayisi = sortWords(kelimesayisi)
-    kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
-        
+    
+def kelime_frekans_siralama(getUrl):
+    kelimesayisi = kelime_sozluk_olusturma(getUrl)
+     
     frekans = frekansbul(kelimesayisi)    
     
     return frekans
 
-def func3(getUrl):
+
+
+def alt_url_bulma(getUrl):
     alturller = []
     alturller1 = []
     alturller2 = []
@@ -203,16 +220,15 @@ def func3(getUrl):
             if(harf == '/'):
                 counter = counter + 1
             anaUrl = anaUrl + harf
-          
-            
-    print(anaUrl)      
+             
     r = requests.get(getUrl)
     soup = BeautifulSoup(r.content,"html.parser")
+    
     for link in soup.find_all('a',href=True):
-        alturller1.append(link['href'])
-        
+        alturller1.append(link['href'])             
+            
     for url in alturller1:
-        if(len(url)>1):
+        if(len(url)>1): 
             if(url[0]=='/'):
                 if url not in alturller2:
                     alturller2.append(url)
@@ -224,12 +240,33 @@ def func3(getUrl):
             ##if(index !=0):
               ##  alturller2.append(url)
     #for alturl in alturller2:
-        #print(anaUrl+alturl)
-    for url in alturller2:
-        alturller.append(anaUrl+url)
+        #print(anaUrl+alturl)  
+    
+    for url in alturller2: 
+        alturller.append(anaUrl+url)     
           
     return alturller
 
+def txt_okunan_urller():
+    okunanUrllerListe = []
+    okunanaUrller = []
+    ftest = open("static/hoca_url.txt",encoding="utf-8")
+    for words in ftest.readlines():
+        okunanUrllerListe.append(words.split())
+    ftest.close()
+    
+    for urller in okunanUrllerListe:
+          print(type(urller[0]))
+          okunanaUrller.append(urller[0])
+          
+    
+    return okunanaUrller
+    
+    
+    
+    
+    
+    
   
        
 

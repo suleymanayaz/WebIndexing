@@ -9,13 +9,17 @@
     <p> Ana Url :{{anaUrlisim}} </p>
         <p>Ana Url olan benzerlikler </p>
         {% for anahtar,deger in test1.items() %} 
-             <li> {{ anahtar }} : {{ deger }}</li>
+             <li>  Alt url = {{anahtar}} : {{ deger }}</li>
+        {% endfor %}
+       
+        <p>Seviye : {{anaUrlObject.seviye}} Ana Url : {{anaUrlObject.anaUrl}} </p>
+        {% for altUrller1 in anaUrlObject.altUrller %}
+        <li>Seviye : {{altUrller1.seviye}} Url : {{altUrller1.anaUrl}}</li>
+             {% for altUrl in altUrller1.altUrller %}
+                <li> Seviye : {{ altUrl.seviye}} Url : {{altUrl.anaUrl}} </li>        
+            {% endfor %}
         {% endfor %}
         
-        <p> Alt Urller :  </p>
-        {% for anahtar in test %} 
-             <li> {{ anahtar }} </li>
-        {% endfor %}
         
     </ul>
 {% endblock %}
