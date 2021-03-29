@@ -177,6 +177,23 @@ def returnValue(dict,key):
     if key in dict.keys(): 
         return dict[key]    
     
+def kelime_sozluk_olusturma_div(getUrl):
+    tumkelimeler = []
+    r = requests.get(getUrl)
+    soup = BeautifulSoup(r.content,"html.parser")
+    for kelimegruplari in soup.find_all("div"):
+        icerik = kelimegruplari.text
+        kelimeler = icerik.lower().split()
+
+        for kelime in kelimeler:
+            tumkelimeler.append(kelime)
+            # print(kelime)
+        tumkelimeler = sembolleritemizle(tumkelimeler)
+    kelimesayisi = sozlukolustur(tumkelimeler)
+    
+    return kelimesayisi
+
+
     
 def kelime_sozluk_olusturma(getUrl):
     tumkelimeler= []
@@ -192,6 +209,9 @@ def kelime_sozluk_olusturma(getUrl):
         tumkelimeler = sembolleritemizle(tumkelimeler)
 
     kelimesayisi = sozlukolustur(tumkelimeler)
+    if(len(kelimesayisi) == 0):
+        kelimesayisi = kelime_sozluk_olusturma_div(getUrl)
+        print("boşşşş")
     kelimesayisi = sortWords(kelimesayisi)
     kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
     
@@ -212,6 +232,7 @@ def alt_url_bulma(getUrl):
     alturller = []
     alturller1 = []
     alturller2 = []
+    alturller3 = []
     counter=0
     #index = 0
     anaUrl = ""
@@ -220,7 +241,8 @@ def alt_url_bulma(getUrl):
             if(harf == '/'):
                 counter = counter + 1
             anaUrl = anaUrl + harf
-             
+    
+    anaUrl = anaUrl[:-1]         
     r = requests.get(getUrl)
     soup = BeautifulSoup(r.content,"html.parser")
     
@@ -232,20 +254,26 @@ def alt_url_bulma(getUrl):
             if(url[0]=='/'):
                 if url not in alturller2:
                     alturller2.append(url)
-    ##if(len(alturller2)==0):
-     ##   for url in alturller:
-       ##     index = 0
-         ##   index = url.find(anaUrl)
-           ## print(url.find(anaUrl)) 
-            ##if(index !=0):
-              ##  alturller2.append(url)
-    #for alturl in alturller2:
-        #print(anaUrl+alturl)  
+    
+    
+    for url in alturller1:
+        if anaUrl in url:
+            if url not in alturller3:
+               alturller3.append(url)
+                
+        
     
     for url in alturller2: 
         alturller.append(anaUrl+url)     
-          
-    return alturller
+        
+    altUrllerr = alturller+alturller3
+    for sa in alturller:
+        print(sa)
+        
+    print("------------")
+    for ass in alturller3:
+        print(ass)
+    return altUrllerr
 
 def txt_okunan_urller():
     okunanUrllerListe = []

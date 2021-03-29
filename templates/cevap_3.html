@@ -1,17 +1,76 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Soru Cevabı 3 - {% endblock %}</h1>
+  <h1>{% block title %}Soru Cevabı 4 - {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
     <ul>
-    <p> Ana Url :{{anaUrlisim}}</p>
-        
-        <p> Alt Urller :  </p>
-        {% for anahtar in altUrller %} 
-             <li> {{ anahtar }} </li>
+    <p> Ana Url :{{anaUrlObject.anaUrl}} </p>
+        <p>Ana Url olan benzerlikler </p>
+        {% for anahtar,deger in anaUrlObject_Skor_Sozluk.items() %} 
+             <li> {{anahtar.seviye}}.seviye Url : {{ anahtar.anaUrl }} : {{ deger }}</li>
         {% endfor %}
+    </ul> 
+         <p> Urller Ağaç yapısı ve Özellikleri </p>
+         <ul>
+             <li>{{anaUrlObject.seviye}}.seviye Ana Url = {{anaUrlObject.anaUrl}}  </li>
+                 <p> Ana Url sözlük :   </p>
+                 {% for kelime,skor  in anaUrlObject.sozluk.items() %}
+                 <li> {{kelime}} : {{skor}}  </li>
+                 {% endfor %}
+                 <p>Ana url frekans sözlüğü </p>
+                 {% for kelime,skor in anaUrlObject.frekans.items() %}
+                 <li> {{kelime}} : {{skor}}  </li>
+                 {% endfor %}
+                
+                 
+                 {% for altUrl in anaUrlObject.altUrller %}
+                     <li>{{altUrl.seviye}}.seviye Alt Url = {{altUrl.anaUrl}}  </li>
+                     <p> Alt Url sözlük :   </p>
+                      {% for kelime,skor  in altUrl.sozluk.items() %}
+                         <li> {{kelime}} : {{skor}}  </li>
+                      {% endfor %}
+                     <p>Alt url frekans sözlüğü </p>
+                     {% for kelime,skor in altUrl.frekans.items() %}
+                         <li> {{kelime}} : {{skor}}  </li>
+                     {% endfor %}
+                      
+                      
+                      {% for altUrl2 in altUrl.altUrller %}
+                           <li>{{altUrl2.seviye}}.seviye Alt Url = {{altUrl2.anaUrl}}  </li>
+                           <p> Alt Url sözlük :   </p>
+                          {% for kelime,skor  in altUrl2.sozluk.items() %}
+                              <li> {{kelime}} : {{skor}}  </li>
+                          {% endfor %}
+                         <p>Alt url frekans sözlüğü </p>
+                         {% for kelime,skor in altUrl2.frekans.items() %}
+                             <li> {{kelime}} : {{skor}}  </li>
+                         {% endfor %}
+                         
+                          
+                              {% for altUrl3 in altUrl2.altUrller %}
+                                  <li>{{altUrl3.seviye}}.seviye Alt Url = {{altUrl3.anaUrl}}  </li>
+                                  <p> Alt Url sözlük :   </p>
+                                  {% for kelime,skor  in altUrl3.sozluk.items() %}
+                                      <li> {{kelime}} : {{skor}}  </li>
+                                  {% endfor %}
+                                 <p>Alt url frekans sözlüğü </p>
+                                 {% for kelime,skor in altUrl3.frekans.items() %}
+                                     <li> {{kelime}} : {{skor}}  </li>
+                                 {% endfor %}
+                                 
+                             {% endfor %}
+                      
+                      
+                      {% endfor %}
+                      
+                      
+              {% endfor %}
+                
+         </ul>
+       
         
-    </ul>
+          
+   
 {% endblock %}

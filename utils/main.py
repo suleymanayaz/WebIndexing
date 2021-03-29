@@ -6,32 +6,56 @@ import operator
 import nltk
 #nltk.download('stopwords')
 from nltk.corpus import stopwords
-ftest = open("kelime-esanlamlisi.txt","r+",encoding="utf-8")
-#print(stopwords.words('turkish'))
-
-ellestopwords =[]
-for words in ftest.readlines():
-    if( words != None ):
-     ellestopwords.append(words.split())
-ftest.close()
 
 
 
+    alturller = []
+    alturller1 = []
+    alturller2 = []
+    counter=0
+    #index = 0
+    anaUrl = ""
+    for harf in url:
+        if(counter < 3 ):
+            if(harf == '/'):
+                counter = counter + 1
+            anaUrl = anaUrl + harf
+             
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content,"html.parser")
+    
+    for link in soup.find_all('a',href=True):
+        alturller1.append(link['href'])             
+            
+    for url in alturller1:
+        if(len(url)>1): 
+            if(url[0]=='/'):
+                if url not in alturller2:
+                    alturller2.append(url)
+    ##if(len(alturller2)==0):
+     ##   for url in alturller:
+       ##     index = 0
+         ##   index = url.find(anaUrl)
+           ## print(url.find(anaUrl)) 
+            ##if(index !=0):
+              ##  alturller2.append(url)
+    #for alturl in alturller2:
+        #print(anaUrl+alturl)  
+    
+    for url in alturller2: 
+        alturller.append(anaUrl+url)     
+          
+    return alturller
+
+for alturl in alt_url_bulma(url):
+    print(alturl)
     
 
 
 
-tumkelimeler = []
-alturller= []
-r= requests.get(url)
-
-soup = BeautifulSoup(r.content,"html.parser")
-
-
-
-for link in soup.find_all('a', href=True):
-    alturller.append(link['href'])
-    #print(link['href'])
+    
+    
+    
 
 #for url in alturller:
    
@@ -87,20 +111,6 @@ def sembolleritemizle(tumkelimeler):
             sembolsuzkelimeler.append(kelime)
     return  sembolsuzkelimeler
 
-print (soup.find_all("p"))
-for kelimegruplari in soup.find_all("p"):
-    icerik = kelimegruplari.text
-    kelimeler = icerik.lower().split()
-
-    for kelime in kelimeler:
-        tumkelimeler.append(kelime)
-       # print(kelime)
-    tumkelimeler = sembolleritemizle(tumkelimeler)
-
-    kelimesayisi = sozlukolustur(tumkelimeler)
-    kelimesayisi = sortWords(kelimesayisi)
-    print(kelimesayisi)
-    #frekans = frekansbul(kelimesayisi)  
     
     
 
