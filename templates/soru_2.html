@@ -1,7 +1,19 @@
+<style>
+
+    body{
+        background-color: #252525;
+        color: white;
+      padding-top: 100px;
+    }
+</style>
 {% extends 'base.html' %}
 
+{% block header %}
+  <h1 style="text-align: center">{% block title %}SORU 2 {% endblock %}</h1>
+{% endblock %}
+
 {% block content %}
-  <form method="post">
+  <form method="post" style="text-align: center">
     <label for="url"> <br> URLLERİ GİRİNİZ : </label> 
     <input size="50" placeholder="Url Giriniz" name="url" id="url" required>
     <input size="50" placeholder="Url Giriniz" name="url2" id="url2" required>

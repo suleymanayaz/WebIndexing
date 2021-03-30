@@ -1,76 +1,336 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multilevel Sliding Accordion Menu Demo</title>
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href="http://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
+<style>
+/* reset css */
+
+
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block }
+
+body { line-height: 1 }
+
+ol, ul { list-style: none }
+
+blockquote, q { quotes: none }
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0
+}
+
+body {
+  font: 100% "roboto", "Trebuchet MS", sans-serif;
+  background-color:#EF476F;
+}
+
+a { text-decoration: none; }
+
+/**
+ * Hidden fallback
+ */
+
+
+/**
+ * Styling navigation
+ */
+
+header {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 22.5rem;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+}
+
+/**
+ * Styling top level items
+ */
+
+.nav a, .nav label {
+  display: block;
+ padding: .85rem;
+  color: #fff;
+  background-color: #151515;
+  box-shadow: inset 0 -1px #1d1d1d;
+  -webkit-transition: all .25s ease-in;
+  transition: all .25s ease-in;
+}
+
+.nav a:focus, .nav a:hover, .nav label:focus, .nav label:hover {
+  color: rgba(255, 255, 255, 0.5);
+  background: #030303;
+}
+
+.nav label { cursor: pointer; }
+
+/**
+ * Styling first level lists items
+ */
+
+.group-list a, .group-list label {
+  padding-left: 2rem;
+  background: #252525;
+  box-shadow: inset 0 -1px #373737;
+}
+
+.group-list a:focus, .group-list a:hover, .group-list label:focus, .group-list label:hover { background: #131313; }
+
+/**
+ * Styling second level list items
+ */
+
+.sub-group-list a, .sub-group-list label {
+  padding-left: 4rem;
+  background: #353535;
+  box-shadow: inset 0 -1px #474747;
+}
+
+.sub-group-list a:focus, .sub-group-list a:hover, .sub-group-list label:focus, .sub-group-list label:hover { background: #232323; }
+
+/**
+ * Styling third level list items
+ */
+
+.sub-sub-group-list a, .sub-sub-group-list label {
+  padding-left: 6rem;
+  background: #454545;
+  box-shadow: inset 0 -1px #575757;
+}
+
+.sub-sub-group-list a:focus, .sub-sub-group-list a:hover, .sub-sub-group-list label:focus, .sub-sub-group-list label:hover { background: #333333; }
+
+/**
+ * Hide nested lists
+ */
+
+.group-list, .sub-group-list, .sub-sub-group-list {
+  height: 100%;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: max-height .5s ease-in-out;
+  transition: max-height .5s ease-in-out;
+}
+
+.nav__list input[type=checkbox]:checked + label + ul { /* reset the height when checkbox is checked */
+max-height: 100%; }
+
+/**
+ * Rotating chevron icon
+ */
+
+label > span {
+  float: right;
+  -webkit-transition: -webkit-transform .65s ease;
+  transition: transform .65s ease;
+}
+
+.nav__list input[type=checkbox]:checked + label > span {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+</style>
+</head>
+
+<body>
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Soru Cevabı 4 - {% endblock %}</h1>
+  <h1 style="text-align: center">{% block title %}Soru 3 Cevabı {% endblock %}</h1>
 {% endblock %}
-
 {% block content %}
+<div id="css-script-menu">
+  <div class="css-script-center">
     <ul>
-    <p> Ana Url :{{anaUrlObject.anaUrl}} </p>
-        <p>Ana Url olan benzerlikler </p>
-        {% for anahtar,deger in anaUrlObject_Skor_Sozluk.items() %} 
-             <li> {{anahtar.seviye}}.seviye Url : {{ anahtar.anaUrl }} : {{ deger }}</li>
-        {% endfor %}
-    </ul> 
-         <p> Urller Ağaç yapısı ve Özellikleri </p>
-         <ul>
-             <li>{{anaUrlObject.seviye}}.seviye Ana Url = {{anaUrlObject.anaUrl}}  </li>
-                 <p> Ana Url sözlük :   </p>
-                 {% for kelime,skor  in anaUrlObject.sozluk.items() %}
-                 <li> {{kelime}} : {{skor}}  </li>
-                 {% endfor %}
-                 <p>Ana url frekans sözlüğü </p>
-                 {% for kelime,skor in anaUrlObject.frekans.items() %}
-                 <li> {{kelime}} : {{skor}}  </li>
-                 {% endfor %}
-                
-                 
-                 {% for altUrl in anaUrlObject.altUrller %}
-                     <li>{{altUrl.seviye}}.seviye Alt Url = {{altUrl.anaUrl}}  </li>
-                     <p> Alt Url sözlük :   </p>
-                      {% for kelime,skor  in altUrl.sozluk.items() %}
-                         <li> {{kelime}} : {{skor}}  </li>
-                      {% endfor %}
-                     <p>Alt url frekans sözlüğü </p>
-                     {% for kelime,skor in altUrl.frekans.items() %}
-                         <li> {{kelime}} : {{skor}}  </li>
-                     {% endfor %}
-                      
-                      
-                      {% for altUrl2 in altUrl.altUrller %}
-                           <li>{{altUrl2.seviye}}.seviye Alt Url = {{altUrl2.anaUrl}}  </li>
-                           <p> Alt Url sözlük :   </p>
-                          {% for kelime,skor  in altUrl2.sozluk.items() %}
-                              <li> {{kelime}} : {{skor}}  </li>
-                          {% endfor %}
-                         <p>Alt url frekans sözlüğü </p>
-                         {% for kelime,skor in altUrl2.frekans.items() %}
-                             <li> {{kelime}} : {{skor}}  </li>
-                         {% endfor %}
-                         
-                          
-                              {% for altUrl3 in altUrl2.altUrller %}
-                                  <li>{{altUrl3.seviye}}.seviye Alt Url = {{altUrl3.anaUrl}}  </li>
-                                  <p> Alt Url sözlük :   </p>
-                                  {% for kelime,skor  in altUrl3.sozluk.items() %}
-                                      <li> {{kelime}} : {{skor}}  </li>
-                                  {% endfor %}
-                                 <p>Alt url frekans sözlüğü </p>
-                                 {% for kelime,skor in altUrl3.frekans.items() %}
-                                     <li> {{kelime}} : {{skor}}  </li>
-                                 {% endfor %}
-                                 
-                             {% endfor %}
-                      
-                      
-                      {% endfor %}
-                      
-                      
-              {% endfor %}
-                
-         </ul>
+      <li><a href="http://www.cssscript.com/multilevel-accordion-menu-with-plain-html-css/">Download</a></li>
+      <li><a href="http://www.cssscript.com/">Back To CSS Script</a></li>
+    </ul>
+    <div class="css-script-ads"><script type="text/javascript">
+google_ad_client = "ca-pub-2783044520727903";
+/* CSSScript Demo Page */
+google_ad_slot = "3025259193";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+      <script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+    <div class="css-script-clear"></div>
+  </div>
+</div>
+<header role="banner">
+  <nav class="nav" role="navigation">
+    <ul class="nav__list">
+      <li>
+        <input id="group-1" type="checkbox" hidden />
+        <label for="group-1"><span class="fa fa-angle-right"></span> Skor Sıralaması</label>
+        <ul class="group-list">
+              {% for anahtar,deger in anaUrlObject_Skor_Sozluk.items() %}
+              <li><a href="#">{{anahtar.seviye}}.seviye Url : {{ anahtar.anaUrl }} : {{ deger }}</a></li>
+               {% endfor %}  
+        </ul>
+      </li>
+      <li>
+      <input id="group-2" type="checkbox" hidden />
+      <label for="group-2"><span class="fa fa-angle-right"></span> Ağaç Yapısı</label>
+      <ul class="group-list">
+        <li>
        
-        
+        <input id="sub-group-2" type="checkbox" hidden />
+        <label for="sub-group-2"><span class="fa fa-angle-right"></span> Girilen Url</label>
+        <ul class="sub-group-list">
+          <input id="sub-sub-group-2" type="checkbox" hidden />
+          <label for="sub-sub-group-2"><span class="fa fa-angle-right"></span> Sözlük</label>
+          <ul class="sub-sub-group-list">
+            {% for anahtar,deger in anaUrlObject.sozluk.items() %}
+            <li><a href="#">{{anahtar}} : {{deger}}</a></li>
+            {% endfor %}
+          </ul>
+          <input id="sub-sub-group-3" type="checkbox" hidden />
+          <label for="sub-sub-group-3"><span class="fa fa-angle-right"></span> Frekans</label>
+          <ul class="sub-sub-group-list">
+            {% for anahtar,deger in anaUrlObject.frekans.items() %}
+            <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+            {% endfor %}
+          </ul>
           
-   
+
+        </ul>
+        {% for okunanUrller in anaUrlObject.altUrller %}
+        <input id="sub-group-3" type="checkbox" hidden />
+        <label for="sub-group-3"><span class="fa fa-angle-right"></span> Okunan Url</label>
+        <ul class="sub-group-list">
+          <label for="sub-sub-group-0"><span class="fa fa-angle-right"></span>{{okunanUrller.seviye}}. seviye Url</label>
+          <input id="sub-sub-group-4" type="checkbox" hidden />
+          <label for="sub-sub-group-4"><span class="fa fa-angle-right"></span> Sözlük</label>
+          <ul class="sub-sub-group-list">
+            {% for anahtar,deger in okunanUrller.sozluk.items() %}
+            <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+            {% endfor %}
+          </ul>
+          <input id="sub-sub-group-5" type="checkbox" hidden />
+          <label for="sub-sub-group-5"><span class="fa fa-angle-right"></span> Frekans</label>
+          <ul class="sub-sub-group-list">
+            {% for anahtar,deger in okunanUrller.frekans.items() %}
+            <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+            {% endfor %}
+          </ul>
+          <input id="sub-sub-group-6" type="checkbox" hidden />
+          <label for="sub-sub-group-6"><span class="fa fa-angle-right"></span>Skor</label>
+          <ul class="sub-sub-group-list">
+            <li><a href="#">{{okunanUrller.skor}}</a></li>
+          </ul>
+
+
+          <li>
+            <input id="sub-sub-group-7" type="checkbox" hidden />
+            <label for="sub-sub-group-7"><span class="fa fa-angle-right"></span> Alt Urller </label>
+            <ul class="sub-sub-group-list">
+              {% for altUrl in okunanUrller.altUrller %}
+                <input id="sub-group-4" type="checkbox" hidden />
+                <label for="sub-group-4"><span class="fa fa-angle-right"></span> {{altUrl.seviye}}.seviye Alt Url</label>
+                <ul class="sub-group-list">
+                  <input id="sub-sub-group-8" type="checkbox" hidden />
+                  <label for="sub-sub-group-8"><span class="fa fa-angle-right"></span> Sözlük</label>
+                  <ul class="sub-sub-group-list">
+                    {% for anahtar,deger in altUrl.sozluk.items() %}
+                    <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+                    {% endfor %}
+                  </ul> 
+                  <input id="sub-sub-group-9" type="checkbox" hidden />
+                  <label for="sub-sub-group-9"><span class="fa fa-angle-right"></span> Frekans</label>
+                  <ul class="sub-sub-group-list">
+                    {% for anahtar,deger in altUrl.frekans.items() %}
+                    <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+                    {% endfor %}
+                  </ul>
+                  <input id="sub-sub-group-10" type="checkbox" hidden />
+                  <label for="sub-sub-group-10"><span class="fa fa-angle-right"></span>Skor</label>
+                  <ul class="sub-sub-group-list">
+                  <li><a href="#">{{altUrl.skor}}</a></li>
+                  </ul>
+                <li>
+                <input id="sub-sub-group-11" type="checkbox" hidden />
+                <label for="sub-sub-group-11"><span class="fa fa-angle-right"></span> Alt Urller </label>
+                <ul class="sub-sub-group-list">
+                {% for altUrl2 in altUrl.altUrller %}
+                     <input id="sub-group-5" type="checkbox" hidden />
+                    <label for="sub-group-5"><span class="fa fa-angle-right"></span> {{altUrl2.seviye}}.seviye Alt Url</label>
+                    <ul class="sub-group-list">
+                      <input id="sub-sub-group-12" type="checkbox" hidden />
+                      <label for="sub-sub-group-12"><span class="fa fa-angle-right"></span> Sözlük</label>
+                      <ul class="sub-sub-group-list">
+                        {% for anahtar,deger in altUrl2.sozluk.items() %}
+                        <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+                        {% endfor %}
+                      </ul> 
+                      <input id="sub-sub-group-13" type="checkbox" hidden />
+                      <label for="sub-sub-group-13"><span class="fa fa-angle-right"></span> Frekans</label>
+                      <ul class="sub-sub-group-list">
+                        {% for anahtar,deger in altUrl2.frekans.items() %}
+                        <li><a href="#">{{anahtar}}:{{deger}}</a></li>
+                        {% endfor %}
+                      </ul>
+                      <input id="sub-sub-group-14" type="checkbox" hidden />
+                      <label for="sub-sub-group-14"><span class="fa fa-angle-right"></span>Skor</label>
+                      <ul class="sub-sub-group-list">
+                      <li><a href="#">{{altUrl2.skor}}</a></li>
+                      </ul>
+
+    
+
+
+                {% endfor %}
+
+              {% endfor %}
+             </ul>
+
+          </li>
+        </ul>
+
+          {% endfor %}  
+
+
+
+        </li>
+      </ul>
+      </li>
+
+
+    </ul>
+  </nav>
+</header><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46156385-1', 'cssscript.com');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
 {% endblock %}

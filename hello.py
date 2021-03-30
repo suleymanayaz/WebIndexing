@@ -46,7 +46,7 @@ def c():
         anaUrlObject.altUrller.clear()
         anaUrlObject.altUrller_skor.clear()
         altUrller = parser.txt_okunan_urller()
-    
+      
         for altUrl in altUrller:
            
             print("1.SEVİYE : "+altUrl)            
@@ -55,7 +55,7 @@ def c():
             skor = parser.skorHesapla(anaUrlFrekans,altUrlFrekans)    
             altUrlObject = ObjectUrl.AnaUrl(altUrl,altUrlSozluk,altUrlFrekans,skor,1)
             anaUrlObject.alturl_ekle(altUrlObject)
-        
+      
         for altUrlObject in anaUrlObject.altUrller:
             altinaltUrller = parser.alt_url_bulma(altUrlObject.anaUrl)
             for altUrl in altinaltUrller:
@@ -87,7 +87,7 @@ def c():
                     anaUrlObject.altUrller_skor[altUrlObject2] = altUrlObject2.skor
                     
         anaUrlObject.sortSkor(parser.sortWords(anaUrlObject.altUrller_skor))
-       
+      
        
         return render_template('cevap_3.html', anaUrlObject=anaUrlObject,anaUrlObject_Skor_Sozluk=anaUrlObject.altUrller_skor_reverse)
     return render_template('soru_3.html')

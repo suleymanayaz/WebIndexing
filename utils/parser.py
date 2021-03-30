@@ -255,30 +255,25 @@ def alt_url_bulma(getUrl):
                 if url not in alturller2:
                     alturller2.append(url)
     
-    
+    """
     for url in alturller1:
         if anaUrl in url:
             if url not in alturller3:
                alturller3.append(url)
-                
+     """           
         
     
     for url in alturller2: 
         alturller.append(anaUrl+url)     
         
     altUrllerr = alturller+alturller3
-    for sa in alturller:
-        print(sa)
-        
-    print("------------")
-    for ass in alturller3:
-        print(ass)
+  
     return altUrllerr
 
 def txt_okunan_urller():
     okunanUrllerListe = []
     okunanaUrller = []
-    ftest = open("static/hoca_url.txt",encoding="utf-8")
+    ftest = open("static/urllist.txt",encoding="utf-8")
     for words in ftest.readlines():
         okunanUrllerListe.append(words.split())
     ftest.close()

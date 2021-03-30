@@ -1,0 +1,132 @@
+<style>
+.cle {
+	clear:both
+}
+.menu-container {
+	width:700px;
+	margin:0 auto
+}
+.menu {
+	float:left;
+	background:#777;
+	width:700px;
+	margin-top:10px
+}
+.menu ul {
+	display:block;
+	margin:0;
+	padding:0
+}
+.menu ul li {
+	list-style:none;
+	display:Block
+}
+.menu ul li a {
+	color:#fff;
+	text-decoration:none;
+	font-size:12px;
+	font-family: Arial;
+	background:#777;
+	display:Block;
+	padding:20px;
+	border-bottom:1px solid #888
+}
+.menu ul li a:hover {
+	background:#666
+}
+.menu ul li ul {
+	display:none
+}
+.menu ul li:hover ul {
+	display:block
+}
+.menu ul li ul li a {
+	padding:20px 20px 20px 30px;
+	background:#666
+}
+.menu ul li ul li a:hover {
+	background:#555
+}
+.menu ul li:hover > a {
+	background:#666
+}
+
+</style>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="LOREM IPSUM">
+    <meta name="author" content="SitePoint">
+    <meta name="keywords" content="LOREM IPSUM">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Soru Cevabı 2 - {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="menu-container">
+    <div class="menu">
+        <ul>
+            <li><a href="" title="">URL 1 DEKİ TUM KELİMELER</a>
+                <ul>
+                    {% for anahtar,deger in temiz_kelime_sozlugu.items() %}
+                    <li><a href="" title="">{{ anahtar }} : {{ deger }}</a></li>
+                    {% endfor %}
+                </ul>
+               
+            </li>
+            <li><a href="" title="">URL 2 DEKİ TUM KELİMELER</a>
+                <ul>
+                    {% for anahtar,deger in temiz_kelime_sozlugu_2.items() %}
+                    <li><a href="" title="">{{ anahtar }} : {{ deger }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a href="" title="">URL 1 En yüksek frekansa sahip kelimeler</a>
+                <ul>
+                    {% for anahtar,deger in frekans1Url.items() %}
+                    <li><a href="" title="">{{ anahtar }} : {{ deger }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a href="" title="">URL 2 En yüksek frekansa sahip kelimeler</a>
+                <ul>
+                    {% for anahtar,deger in frekans1Url.items() %}
+                    <li><a href="" title="">{{ anahtar }} : {{ deger }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a href="" title="">Ortak Sözlük</a>
+                <ul>
+                    {% if skor!=90 %}
+                {% for anahtar,deger in ortak_sozluk.items() %}
+                    <li><a href="" title="">{{ anahtar }} : {{ deger }}</a></li>
+                    {% endfor %}
+                    {% else %}
+               <li><a href="" title="">Benzer bir kelime yok.</a></li>
+        {% endif %}
+
+                </ul>
+            </li>
+
+            <li><a href="" title="">Benzerlik Skor</a>
+                <ul>
+
+                    <li><a href="" title="">Benzerlik Skor : {{skor}} </a></li>
+                </ul>
+            </li>
+
+
+        </ul>
+    </div>
+</div>
+</body>
+{% endblock %}
+
