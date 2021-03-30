@@ -13,7 +13,7 @@ def hello_world():
     return 'Web indexleme Deneme Surumu '
 
 @app.route('/soru_1', methods=('GET', 'POST'))
-def a():
+def soru_1():
     if request.method == 'POST':
         gelenUrl = request.form['url']
         temiz_kelime_sozlugu = parser.kelime_sozluk_olusturma(gelenUrl)    ## func1 == kelime_sozluk_olusturma
@@ -22,7 +22,7 @@ def a():
     return render_template('soru_1.html')
 
 @app.route('/soru_2',methods=('GET', 'POST'))
-def b():
+def soru_2():
     if request.method == 'POST':
         gelenurl = request.form['url']
         gelenurl2= request.form['url2']
@@ -36,7 +36,7 @@ def b():
     return render_template('soru_2.html')
 
 @app.route('/soru_3',methods=('GET', 'POST'))
-def c():
+def soru_3():
     if request.method == 'POST':
         anaUrl = request.form['url']
         anaUrlSozluk = parser.kelime_sozluk_olusturma(anaUrl)
@@ -94,7 +94,7 @@ def c():
 
 
 @app.route('/soru_4',methods=('GET', 'POST'))
-def d():
+def soru_4():
     if request.method == 'POST':
         anaUrl = request.form['url']
         anaUrlSozluk = parser.kelime_sozluk_olusturma(anaUrl)

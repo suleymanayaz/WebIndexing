@@ -210,8 +210,9 @@ def kelime_sozluk_olusturma(getUrl):
 
     kelimesayisi = sozlukolustur(tumkelimeler)
     if(len(kelimesayisi) == 0):
+        print("p tagında kelime yok")
         kelimesayisi = kelime_sozluk_olusturma_div(getUrl)
-        print("boşşşş")
+        
     kelimesayisi = sortWords(kelimesayisi)
     kelimesayisi = gereksizKelimeCikarma(kelimesayisi)
     
@@ -255,12 +256,12 @@ def alt_url_bulma(getUrl):
                 if url not in alturller2:
                     alturller2.append(url)
     
-    """
+    
     for url in alturller1:
         if anaUrl in url:
             if url not in alturller3:
                alturller3.append(url)
-     """           
+              
         
     
     for url in alturller2: 
